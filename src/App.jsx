@@ -1,26 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
+import Hero3D from './components/Hero3D'
+import Projects from './components/Projects'
+import AboutContact from './components/AboutContact'
+import ThemeToggle from './components/ThemeToggle'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const projectsRef = useRef(null)
+
+  useEffect(() => {
+    // create anchor to scroll to projects
+    projectsRef.current = document.getElementById('projects')
+  }, [])
+
+  const scrollToProjects = () => {
+    projectsRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-white dark:bg-black">
+      <header className="fixed left-0 right-0 top-0 z-50">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <a href="/" className="font-semibold tracking-tight text-zinc-900 dark:text-white">AR.</a>
+          <nav className="flex items-center gap-3">
+            <a href="#projects" className="hidden sm:inline text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition">Projects</a>
+            <a href="#contact" className="hidden sm:inline text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition">Contact</a>
+            <ThemeToggle />
+          </nav>
         </div>
-      </div>
+      </header>
+
+      <main className="">        
+        <Hero3D onScrollCta={scrollToProjects} />
+        <Projects />
+        <AboutContact />
+      </main>
+
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-6 text-center text-xs text-zinc-500 dark:text-zinc-400">
+        © {new Date().getFullYear()} Alex Rivera. All rights reserved.
+      </footer>
     </div>
   )
 }
